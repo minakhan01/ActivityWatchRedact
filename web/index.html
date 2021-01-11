@@ -1,0 +1,47 @@
+<! doctype html>
+<html>
+<head>
+	<title>PAL-Data Redaction</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+	<h1>PAL Data Redaction</h1>
+	<form>
+		Upload your Activity Watch json file: <input type="file" id="datafile-input">
+		<br>Proceed in order.
+	</form>
+
+	<div id="basic-redact-div">
+		<h3>Remove Personal Information</h3>
+		Personally identifiable information will be redacted, e.g. a name, like John, will be replaced by {{NAME}}
+		<br>
+		<label>Redact personally identifiable information?</label><input type="button" name="redact-pii-button" id="redact-pii-button" value="Redact">
+	</div>
+
+	<div id="set-timezone-div">
+		<h3>Set your timezone</h3>
+		Set your timezone after redacting personal information.<br>
+		<label>Select your timezone: </label>
+		<select id="select-timezone"></select>
+		<input type="button" name="set-timezone" id="set-timezone" value="Set">
+	</div>
+
+	<div id="customise-redact-div">
+		<h3>Customise Redaction</h3>
+		<p>Select URLs or Apps from the list and click Redact to remove them from the file. You can also search for URLs or Apps.<br>After searching, scroll to find the selected items.<br></p>
+		<input type="search" id="search-value" placeholder="Search"><input type="button" name="search-button" id="search-button" value="Search">
+		<br><br>URLs and Apps included in the data(in alphabetical order)-
+		<ul id="values-display" class="unique-values-display"></ul>
+		<input type="button" name="redact-custom-button" id="redact-custom-button" value="Redact">
+	</div>
+
+	<div id="download-div">
+		<h3>Download Redacted File</h3>
+		<a id="download-file">Download File</a>
+		<p>After downloading, check your downloads folder for the file "redacted_data.json"</p>
+	</div>
+
+	<script type="module" src="js/main.js"></script>
+	<script type="text/javascript" src="/eel.js"></script>
+</body>
+</html>

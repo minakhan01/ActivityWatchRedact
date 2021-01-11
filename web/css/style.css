@@ -1,0 +1,25 @@
+ul.unique-values-display{
+	height: 20%;
+	width: 40%;
+	margin: 2%;
+	border-width: 2px;
+	border-style: solid;
+	overflow: scroll;
+}
+
+li.unique-value{
+	height: 10%;
+	width: 100%;
+	border-style: dashed; 
+	border-width: 1px;
+	text-align: left;
+	padding-left: 2%;
+	padding-bottom: 1%;
+}
+
+li.unique-value-selected{
+	background-color: red;
+}
+
+/*ul{height:200px; width:18%;}
+ul{overflow:hidden; overflow-y:scroll;}*/
