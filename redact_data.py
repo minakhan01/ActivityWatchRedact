@@ -156,8 +156,14 @@ def redact_desktop_data(desktop_data):
 def redact_selected_urls(web_browser_data, urls_to_remove):
     web_browser_data_events = web_browser_data['events']
 
-    redacted_browser_data_events = [event for event in web_browser_data_events if not event['data']['url'] in urls_to_remove]
+    # redacted_browser_data_events = [event for event in web_browser_data_events if not event['data']['url'] in urls_to_remove]
     
+    redacted_browser_data_events = []
+    for event in web_browser_data_events:
+        if event['data']['url'] in urls_to_remove:
+            event['data']['url'] = 'redacted_url'
+        redacted_browser_data_events.append(event)
+
     web_browser_data['events'] = redacted_browser_data_events
 
     return web_browser_data
@@ -166,7 +172,13 @@ def redact_selected_urls(web_browser_data, urls_to_remove):
 def redact_app_names(desktop_data, app_names_to_remove):
     desktop_data_events = desktop_data['events']
 
-    redacted_desktop_data_events = [event for event in desktop_data_events if not event['data']['app'] in app_names_to_remove]
+    # redacted_desktop_data_events = [event for event in desktop_data_events if not event['data']['app'] in app_names_to_remove]
+
+    redacted_desktop_data_events = []
+    for event in desktop_data_events:
+        if event['data']['app'] in app_names_to_remove:
+            event['data']['app'] = 'redacted_app'
+        redacted_desktop_data_events.append(event)
 
     desktop_data['events'] = redacted_desktop_data_events
 
