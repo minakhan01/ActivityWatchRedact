@@ -1,6 +1,6 @@
 var basic_redact_div = document.getElementById("basic-redact-div");
 var set_timezone_div = document.getElementById("set-timezone-div");
-var set_timezone_div = document.getElementById("set-timezone-div");
+var customize_redact_div = document.getElementById("customise-redact-div");
 var download_div = document.getElementById("download-div");
 var datafile_input = document.getElementById("datafile-input");
 var file_content_display = document.getElementById("file-content-display");
@@ -11,7 +11,11 @@ var download_file_link = document.getElementById("download-file");
 var unique_values_display = document.getElementById("values-display");
 var redact_custom_button = document.getElementById("redact-custom-button");
 var search_value_input = document.getElementById("search-value");
-var search_button = document.getElementById("search-button")
+var search_button = document.getElementById("search-button");
+var basic_redact_div_status = document.getElementById("basic-redact-div-status");
+var set_timezone_div_status = document.getElementById("set-timezone-div-status");
+var customize_redact_div_status = document.getElementById("customise-redact-div-status");
+var file_upload_form_status = document.getElementById("file-upload-form-status");
 
 var data;
 var bucket_key_dict;
@@ -82,11 +86,13 @@ datafile_input.onchange = function(){
 	var reader = new FileReader();
 
 	reader.onloadend = async function(){
+		file_upload_form_status.innerHTML = "Uploading file, please wait..."
 		var dataJSON = JSON.parse(reader.result);
 		var data_arr = await eel.get_data_and_bucket_keys_py(dataJSON)();
 
 		data = data_arr[0];
 		bucket_key_dict = data_arr[1];
+		file_upload_form_status.innerHTML = "File upload complete."
 	}
 
 	reader.readAsText(file);
@@ -94,6 +100,7 @@ datafile_input.onchange = function(){
 
 redact_pii_button.onclick = async function(){
 	if (!((typeof data === 'undefined') || (data === null))){
+		basic_redact_div_status.innerHTML = "Basic redaction in progress, please wait..."
 		var redacted_data_arr = await eel.redact_data_basic_py(data, bucket_key_dict)();
 
 		redacted_data = redacted_data_arr[0];
@@ -104,24 +111,26 @@ redact_pii_button.onclick = async function(){
 		unique_values.sort();
 
 		update_unique_values_display(unique_values);
-		basic_redact_div.innerHTML = basic_redact_div.innerHTML + "Basic redaction done."
+		basic_redact_div_status.innerHTML = "Basic redaction complete."
 	}
 }
 
 set_timezone_button.onclick = async function(){
 	if (!((typeof redacted_data === 'undefined') || (redacted_data === null))){
+		set_timezone_div_status.innerHTML = "Setting timezone, please wait..."
 		var selected_timezone = select_timezone.value
 		if (!(selected_timezone === null)){
 			redacted_data = await eel.set_timezone_py(redacted_data, selected_timezone)()
 		}
 
-		set_timezone_div.innerHTML = set_timezone_div.innerHTML + "Timezone set."
+		set_timezone_div_status.innerHTML = "Timezone set."
 		update_download_link();
 	}
 }
 
 redact_custom_button.onclick = async function(){
 	if (!((typeof redacted_data === 'undefined') || (redacted_data === null))){
+		customize_redact_div_status.innerHTML = "Custom redaction in progress, please wait..."
 		var redact_custom_arr = await eel.redact_data_custom_py(redacted_data, values_to_redact, unique_values, unique_urls, unique_app_names)();
 		values_to_redact = [];
 
@@ -133,6 +142,7 @@ redact_custom_button.onclick = async function(){
 		update_unique_values_display(unique_values);
 
 		update_download_link();
+		customize_redact_div_status.innerHTML = "Custom redaction complete."
 	}
 }
 

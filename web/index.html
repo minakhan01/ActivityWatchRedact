@@ -8,6 +8,7 @@
 	<h1>PAL Data Redaction</h1>
 	<form>
 		Upload your Activity Watch json file: <input type="file" id="datafile-input">
+		<br><div id="file-upload-form-status" style="display: inline"></div>
 		<br>Proceed in order.
 	</form>
 
@@ -16,6 +17,7 @@
 		Personally identifiable information will be redacted, e.g. a name, like John, will be replaced by {{NAME}}
 		<br>
 		<label>Redact personally identifiable information?</label><input type="button" name="redact-pii-button" id="redact-pii-button" value="Redact">
+		<div id="basic-redact-div-status" style="display: inline;"></div>
 	</div>
 
 	<div id="set-timezone-div">
@@ -24,6 +26,7 @@
 		<label>Select your timezone: </label>
 		<select id="select-timezone"></select>
 		<input type="button" name="set-timezone" id="set-timezone" value="Set">
+		<div id="set-timezone-div-status" style="display: inline;"></div>
 	</div>
 
 	<div id="customise-redact-div">
@@ -33,6 +36,7 @@
 		<br><br>URLs and Apps included in the data(in alphabetical order)-
 		<ul id="values-display" class="unique-values-display"></ul>
 		<input type="button" name="redact-custom-button" id="redact-custom-button" value="Redact">
+		<div id="customise-redact-div-status" style="display: inline;"></div>
 	</div>
 
 	<div id="download-div">
