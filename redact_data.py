@@ -153,15 +153,20 @@ def redact_desktop_data(desktop_data):
 
     return desktop_data, unique_app_names
 
-def redact_selected_urls(web_browser_data, urls_to_remove):
+def redact_selected_urls(web_browser_data, urls_to_remove, num_values_redacted):
     web_browser_data_events = web_browser_data['events']
 
     # redacted_browser_data_events = [event for event in web_browser_data_events if not event['data']['url'] in urls_to_remove]
     
+    # create redaction mapping dictionary
+    redaction_mapping = {
+        url:'redacted_url_'+str(num_values_redacted+i) for i, url in enumerate(urls_to_remove)
+    }
+
     redacted_browser_data_events = []
     for event in web_browser_data_events:
         if event['data']['url'] in urls_to_remove:
-            event['data']['url'] = 'redacted_url'
+            event['data']['url'] = redaction_mapping[event['data']['url']]
         redacted_browser_data_events.append(event)
 
     web_browser_data['events'] = redacted_browser_data_events
@@ -169,15 +174,20 @@ def redact_selected_urls(web_browser_data, urls_to_remove):
     return web_browser_data
 
 
-def redact_app_names(desktop_data, app_names_to_remove):
+def redact_app_names(desktop_data, app_names_to_remove, num_values_redacted):
     desktop_data_events = desktop_data['events']
 
     # redacted_desktop_data_events = [event for event in desktop_data_events if not event['data']['app'] in app_names_to_remove]
 
+    # create redaction mapping dictionary
+    redaction_mapping = {
+        app:'redacted_app_'+str(num_values_redacted+i) for i, app in enumerate(app_names_to_remove)
+    }
+
     redacted_desktop_data_events = []
     for event in desktop_data_events:
         if event['data']['app'] in app_names_to_remove:
-            event['data']['app'] = 'redacted_app'
+            event['data']['app'] = redaction_mapping[event['data']['app']]
         redacted_desktop_data_events.append(event)
 
     desktop_data['events'] = redacted_desktop_data_events
@@ -217,16 +227,18 @@ def redact_data_basic(data, bucket_key_dict):
 
     return redacted_data, unique_urls, unique_app_names
 
-def redact_data_custom(redacted_data, urls_to_remove, app_names_to_remove):
+def redact_data_custom(redacted_data, urls_to_remove, app_names_to_remove, num_values_redacted):
     # Remove app names, urls
     # process web data to remove selected urls
     browser_data =  redacted_data["buckets"]["aw-watcher-web"]
-    redacted_data["buckets"]["aw-watcher-web"] = redact_selected_urls(browser_data, urls_to_remove)
+    redacted_data["buckets"]["aw-watcher-web"] = redact_selected_urls(browser_data, urls_to_remove, num_values_redacted)
     logging.info("Web data successfully redacted (user selected)...")
+
+    num_values_redacted += len(urls_to_remove)
 
     # process window data to remove app names
     desktop_data = redacted_data["buckets"]["aw-watcher-window"]
-    redacted_data["buckets"]["aw-watcher-window"] = redact_app_names(desktop_data, app_names_to_remove)
+    redacted_data["buckets"]["aw-watcher-window"] = redact_app_names(desktop_data, app_names_to_remove, num_values_redacted)
     logging.info("Window data successfully redacted (user selected)...")
 
     return redacted_data

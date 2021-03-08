@@ -24,6 +24,7 @@ var unique_urls;
 var unique_app_names;
 var unique_values;
 var values_to_redact = [];
+var num_values_redacted = 0;
 
 async function add_timezone_options(){
 	var all_timezones = await eel.get_timezones_py()();
@@ -131,7 +132,8 @@ set_timezone_button.onclick = async function(){
 redact_custom_button.onclick = async function(){
 	if (!((typeof redacted_data === 'undefined') || (redacted_data === null))){
 		customize_redact_div_status.innerHTML = "Custom redaction in progress, please wait..."
-		var redact_custom_arr = await eel.redact_data_custom_py(redacted_data, values_to_redact, unique_values, unique_urls, unique_app_names)();
+		var redact_custom_arr = await eel.redact_data_custom_py(redacted_data, values_to_redact, unique_values, unique_urls, unique_app_names, num_values_redacted)();
+		num_values_redacted = num_values_redacted + values_to_redact.length;
 		values_to_redact = [];
 
 		redacted_data = redact_custom_arr[0];

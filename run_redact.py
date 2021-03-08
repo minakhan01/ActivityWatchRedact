@@ -38,7 +38,8 @@ def redact_data_custom_py(
 	values_to_redact, 
 	unique_values, 
 	unique_urls,
-	unique_app_names
+	unique_app_names,
+	num_values_redacted
 ):
 	url_to_redact = []
 	app_to_redact = []
@@ -52,7 +53,7 @@ def redact_data_custom_py(
 			unique_values.remove(val)
 
 	redacted_data = redact_data_custom(
-		redacted_data, url_to_redact, app_to_redact
+		redacted_data, url_to_redact, app_to_redact, num_values_redacted
 	)
 
 	return [redacted_data, list(unique_values)]
