@@ -1,0 +1,3 @@
+([('run_redact',
+   '/Users/advaitrane/Advait/Programming/Python/PAL_MediaLab_Thesis/ActivityWatchRedact/dist/run_redact',
+   'EXECUTABLE')],)
